@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7">
+<title>Eye Drops</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F2F2F7;
+  --card:#FFFFFF;
+  --label:#1C1C1E;
+  --label2:rgba(60,60,67,0.60);
+  --label3:rgba(60,60,67,0.30);
+  --sep:rgba(60,60,67,0.20);
+  --fill:rgba(120,120,128,0.12);
+  --accent:#2AA5B8;
+  --red:#D8352A;
+  --red-soft:rgba(216,53,42,0.10);
+  --orange:#C7761A;
+  --blue:#0A69D9;
+  --green:#1E8E3E;
+  --shadow:0 1px 2px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#000000;
+    --card:#1C1C1E;
+    --label:#FFFFFF;
+    --label2:rgba(235,235,245,0.60);
+    --label3:rgba(235,235,245,0.30);
+    --sep:rgba(84,84,88,0.65);
+    --fill:rgba(120,120,128,0.24);
+    --accent:#4AC8DC;
+    --red:#FF453A;
+    --red-soft:rgba(255,69,58,0.16);
+    --orange:#FF9F0A;
+    --blue:#0A84FF;
+    --green:#30D158;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--label);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Inter,system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.35;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+  padding:0 0 calc(40px + env(safe-area-inset-bottom));
+}
+.wrap{max-width:460px;margin:0 auto;padding:0 16px}
+
+.banner{
+  position:sticky;top:0;z-index:20;
+  margin:0 -16px 4px;
+  padding:calc(12px + env(safe-area-inset-top)) 20px 12px;
+  background:var(--red);
+  color:#fff;
+  font-size:15px;font-weight:600;letter-spacing:-0.1px;
+  display:flex;align-items:center;gap:10px;
+  animation:drop .32s cubic-bezier(.16,1,.3,1);
+}
+.banner svg{flex:none}
+@keyframes drop{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+[hidden]{display:none !important}
+
+header{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:28px 4px 10px;
+}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--label2);margin-bottom:4px;
+}
+h1{font-size:34px;font-weight:700;letter-spacing:-0.8px;margin:0;line-height:1.06}
+.ring{position:relative;flex:none;width:68px;height:68px}
+.ring svg{transform:rotate(-90deg)}
+.ring .track{stroke:var(--fill)}
+.ring .prog{stroke:var(--green);stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.16,1,.3,1)}
+.ring .count{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:600;letter-spacing:-0.3px;
+}
+.ring .count b{font-weight:700}
+.ring .count span{color:var(--label2);font-weight:600}
+
+.sec-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:0 4px 8px;margin-top:26px;
+}
+.sec-head h2{
+  font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--label2);margin:0;
+}
+.sec-head .tally{font-size:13px;font-weight:600;color:var(--label3)}
+.wrap > .sec-head:first-of-type{margin-top:8px}
+.card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+
+.dose{
+  display:flex;align-items:center;gap:14px;width:100%;
+  padding:14px 16px;border:0;background:none;color:inherit;
+  font:inherit;text-align:left;cursor:pointer;
+  transition:background .15s ease, transform .12s ease;
+}
+.dose + .dose{box-shadow:inset 0 .5px 0 var(--sep)}
+.dose:active{background:var(--fill);transform:scale(.99)}
+.dose:focus-visible{outline:2.5px solid var(--accent);outline-offset:-3px}
+.dose .txt{flex:1;min-width:0}
+.dose .time{
+  font-size:17px;font-weight:600;letter-spacing:-0.3px;transition:color .2s;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.dose .med{
+  font-size:12.5px;font-weight:700;letter-spacing:0;
+  padding:2.5px 8px;border-radius:6px;
+  background:var(--fill);color:var(--label);
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:color .2s,background .2s;
+}
+.dose.taken .med{color:var(--label2);font-weight:600}
+.dose .status{font-size:13px;color:var(--label2);margin-top:3px}
+.dose.taken .time{color:var(--label2);font-weight:500}
+.dose.taken .status{color:var(--green);font-weight:500}
+.dose.upcoming .status{color:var(--blue);font-weight:500}
+.dose.due .status{color:var(--orange);font-weight:600}
+.dose.overdue .status{color:var(--red);font-weight:600}
+
+.box{
+  flex:none;width:29px;height:29px;border-radius:50%;
+  border:2px solid var(--label3);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s ease,border-color .2s ease;
+}
+.dose.taken .box{background:var(--green);border-color:var(--green);animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+.box svg{opacity:0;transform:scale(.4);transition:opacity .18s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.dose.taken .box svg{opacity:1;transform:scale(1)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+
+.link-row{display:flex;justify-content:center;padding:14px 0 2px}
+.link{
+  border:0;background:none;font:inherit;font-size:15px;font-weight:500;
+  color:var(--accent);cursor:pointer;padding:6px 10px;border-radius:8px;
+}
+.link:active{opacity:.55}
+.link:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
+
+.bottle{padding:16px}
+.bottle.expired{background:var(--red-soft)}
+.bottle-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.bottle-title{font-size:17px;font-weight:600;letter-spacing:-0.3px}
+.bottle-sub{font-size:13px;color:var(--label2);margin-top:3px}
+.bottle-left{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;padding-top:2px}
+.bottle.expired .bottle-left{color:var(--red)}
+.bar{height:5px;border-radius:3px;background:var(--fill);margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--accent);transition:width .5s ease,background .3s}
+.bottle.expired .bar i{background:var(--red)}
+.btn{
+  display:block;width:100%;margin-top:14px;padding:12px;
+  border:0;border-radius:12px;background:var(--fill);color:var(--accent);
+  font:inherit;font-size:16px;font-weight:600;letter-spacing:-0.2px;cursor:pointer;
+  transition:opacity .15s,transform .12s;
+}
+.btn:active{opacity:.6;transform:scale(.985)}
+.btn:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
+.btn.solid{background:var(--accent);color:#fff}
+.btn.danger{color:var(--red)}
+.btn-row{display:flex;gap:10px}
+.btn-row .btn{flex:1}
+.bottle.expired .btn.solid{background:var(--red);color:#fff}
+.empty{font-size:15px;color:var(--label2);margin-top:4px}
+
+.scrim{
+  position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.35);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:12px;animation:fade .2s ease;
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{
+  width:100%;max-width:420px;background:var(--card);border-radius:18px;
+  padding:22px 20px 16px;text-align:center;
+  max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  animation:up .34s cubic-bezier(.16,1,.3,1);
+  margin-bottom:env(safe-area-inset-bottom);
+}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet h3{margin:0 0 6px;font-size:19px;font-weight:600;letter-spacing:-0.4px}
+.sheet p{margin:0 0 16px;font-size:14px;color:var(--label2);line-height:1.45}
+.sheet .btn{margin-top:8px}
+@media (min-width:600px){.scrim{align-items:center}}
+
+.field{display:block;text-align:left;margin-bottom:10px}
+.field .lbl{
+  display:block;font-size:12px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--label2);margin:0 0 6px 2px;
+}
+input[type=time],input[type=datetime-local],input[type=text]{
+  padding:12px;border:0;border-radius:12px;
+  background:var(--fill);color:var(--label);
+  font:inherit;font-size:17px;
+}
+input[type=time],input[type=datetime-local]{width:100%;font-variant-numeric:tabular-nums}
+input:focus-visible{outline:2.5px solid var(--accent);outline-offset:1px}
+.col-head{
+  display:flex;gap:8px;padding:0 2px 6px;
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--label2);
+}
+.col-head .c1{flex:0 0 122px}
+.col-head .c2{flex:1}
+.time-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.time-row .t{flex:0 0 122px}
+.time-row .n{flex:1;min-width:0;font-size:16px}
+.remove{
+  flex:none;width:32px;height:32px;border-radius:50%;border:0;
+  background:var(--fill);color:var(--red);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.remove:active{opacity:.6}
+.remove:focus-visible{outline:2.5px solid var(--red);outline-offset:2px}
+
+.toast{
+  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);z-index:60;
+  background:var(--label);color:var(--bg);
+  padding:10px 18px;border-radius:20px;font-size:14px;font-weight:500;
+  max-width:90vw;text-align:center;
+  animation:fade .2s ease;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="banner" id="banner" hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="9.5"/><path d="M12 7v6"/><circle cx="12" cy="16.6" r="0.1" stroke-width="2.6"/>
+    </svg>
+    <span>Expired bottle: please get a new bottle.</span>
+  </div>
+
+  <header>
+    <div>
+      <div class="eyebrow" id="today">&nbsp;</div>
+      <h1>Eye Drops<br>Schedule</h1>
+    </div>
+    <div class="ring" role="img" aria-label="Doses taken today">
+      <svg width="68" height="68" viewBox="0 0 68 68" aria-hidden="true">
+        <circle class="track" cx="34" cy="34" r="28" fill="none" stroke-width="6"/>
+        <circle class="prog" id="prog" cx="34" cy="34" r="28" fill="none" stroke-width="6"
+                stroke-dasharray="175.93" stroke-dashoffset="175.93"/>
+      </svg>
+      <div class="count"><b id="doneCount">0</b><span id="totalCount">/6</span></div>
+    </div>
+  </header>
+
+  <div class="sec-head"><h2 id="bottleHead">Bottle</h2></div>
+  <div class="card"><div class="bottle" id="bottle"></div></div>
+
+  <div id="sections"></div>
+
+  <div class="link-row"><button class="link" id="editSchedule">Edit schedule</button></div>
+
+</div>
+
+<script type="module">
+/* ============================================================
+   OPTIONAL SHARED SYNC
+   Leave the placeholders below and the app works on this device
+   alone, saving to the browser. Fill them in and every device
+   shares one live copy — check off a dose on your phone and it
+   appears on everyone else's within a second.
+
+   1. console.firebase.google.com -> create a free project
+   2. Build -> Realtime Database -> Create Database -> test mode
+   3. Project settings -> General -> Your apps -> </> web icon
+      -> register an app -> copy the config values here
+   These values are not secret; they belong in client-side code.
+   Access is controlled by the Database Rules instead.
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyCL5z-6RfxG6-C6zEvTK2Yw15gbXiTrt4c",
+  authDomain: "eye-drops-schedule.firebaseapp.com",
+  databaseURL: "https://eye-drops-schedule-default-rtdb.firebaseio.com",
+  projectId: "eye-drops-schedule",
+};
+
+const LOCAL_KEY = 'eyedrops:v2';
+let cloud = null;   // { ref, set } once sync is connected
+
+const BOTTLE_HOURS = 72;
+const BOTTLE_NAME = 'Losarten';   // the one medication with a 3-day bottle
+const DEFAULT_SCHEDULE = [
+  { m: 540,  name: '' },
+  { m: 600,  name: '' },
+  { m: 660,  name: '' },
+  { m: 840,  name: '' },
+  { m: 900,  name: '' },
+  { m: 960,  name: '' }
+];
+
+let state = { schedule: DEFAULT_SCHEDULE.slice(), bottle: null, log: {} };
+let ready = false;
+
+/* ---------- storage: local always, cloud when connected ---------- */
+async function save() {
+  const days = Object.keys(state.log).sort().slice(-14);
+  const trimmed = {};
+  days.forEach(function(d){ trimmed[d] = state.log[d]; });
+  state.log = trimmed;
+
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (e) {}
+
+  if (cloud) {
+    try { await cloud.set(cloud.ref, state); }
+    catch (e) { toast("Couldn't sync to other devices."); }
+  }
+}
+
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if (!raw) return;
+    const p = JSON.parse(raw);
+    state.schedule = normalize(p.schedule);
+    state.bottle = p.bottle || null;
+    state.log = p.log || {};
+  } catch (e) { /* nothing saved yet */ }
+}
+
+// accepts old saves (plain minute numbers) and new ones ({m, name})
+function normalize(arr) {
+  if (!Array.isArray(arr) || !arr.length) return DEFAULT_SCHEDULE.slice();
+  return arr.map(function(x){
+    if (typeof x === 'number') return { m: x, name: '' };
+    return { m: Number(x.m), name: typeof x.name === 'string' ? x.name : '' };
+  }).filter(function(x){ return !isNaN(x.m); })
+    .sort(function(a,b){ return a.m - b.m; });
+}
+
+/* ---------- helpers ---------- */
+const pad = n => String(n).padStart(2, '0');
+const dayKey = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+const todayLog = () => state.log[dayKey(new Date())] || {};
+const fmtTime = d => d.toLocaleTimeString([], { hour:'numeric', minute:'2-digit' });
+const fmtDate = d => d.toLocaleDateString([], { month:'short', day:'numeric' });
+const doseDate = m => { const d = new Date(); d.setHours(Math.floor(m/60), m%60, 0, 0); return d; };
+const fmtMin = m => fmtTime(doseDate(m));
+const toTimeValue = m => pad(Math.floor(m/60)) + ':' + pad(m%60);
+const fromTimeValue = v => { const p = v.split(':'); return Number(p[0]) * 60 + Number(p[1]); };
+const toLocalStamp = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+const esc = s => String(s).replace(/[&<>"']/g, function(c){
+  return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+});
+
+function dur(ms){
+  const m = Math.max(1, Math.round(ms/60000));
+  if (m < 60) return m + ' min';
+  const h = Math.floor(m/60), r = m % 60;
+  if (h < 24) return r ? h + ' hr ' + r + ' min' : h + ' hr';
+  const dys = Math.floor(h/24), rh = h % 24;
+  const dLabel = dys + ' day' + (dys > 1 ? 's' : '');
+  return rh ? dLabel + ' ' + rh + ' hr' : dLabel;
+}
+
+/* ---------- doses ---------- */
+function toggle(min) {
+  if (!ready) return;
+  const key = dayKey(new Date());
+  const day = Object.assign({}, state.log[key] || {});
+  if (day[min]) delete day[min]; else day[min] = new Date().toISOString();
+  state.log[key] = day;
+  render();
+  save();
+}
+
+function renderDose(item, day, nextDue) {
+  const now = new Date();
+  const min = item.m;
+  const at = doseDate(min);
+  const taken = day[min];
+  let cls = '', status = '';
+
+  if (taken) {
+    cls = 'taken';
+    status = 'Taken at ' + fmtTime(new Date(taken));
+  } else if (now - at > 3600000) {
+    cls = 'overdue';
+    status = 'Overdue by ' + dur(now - at);
+  } else if (now >= at) {
+    cls = 'due';
+    status = 'Due now';
+  } else if (min === nextDue) {
+    cls = 'upcoming';
+    status = 'Next · in ' + dur(at - now);
+  } else {
+    cls = 'upcoming';
+    status = 'Upcoming';
+  }
+
+  const b = document.createElement('button');
+  b.className = 'dose ' + cls;
+  b.setAttribute('role', 'checkbox');
+  b.setAttribute('aria-checked', taken ? 'true' : 'false');
+  b.setAttribute('aria-label', (item.name ? item.name + ', ' : '') + fmtMin(min) + ' dose');
+  b.innerHTML =
+    '<div class="txt"><div class="time">' + fmtMin(min) +
+    (item.name ? '<span class="med">' + esc(item.name) + '</span>' : '') + '</div>' +
+    '<div class="status">' + status + '</div></div>' +
+    '<span class="box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" ' +
+    'stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M4 12.5 9.5 18 20 6.5"/></svg></span>';
+  b.onclick = function(){ toggle(min); };
+  return b;
+}
+
+/* ---------- sheets ---------- */
+function openSheet(html) {
+  closeSheet();
+  const scrim = document.createElement('div');
+  scrim.className = 'scrim';
+  scrim.id = 'scrim';
+  scrim.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + '</div>';
+  scrim.onclick = function(e){ if (e.target === scrim) closeSheet(); };
+  document.body.appendChild(scrim);
+  document.addEventListener('keydown', escClose);
+  return scrim;
+}
+function escClose(e){ if (e.key === 'Escape') closeSheet(); }
+function closeSheet(){
+  const s = document.getElementById('scrim');
+  if (s) s.remove();
+  document.removeEventListener('keydown', escClose);
+}
+
+/* ---------- bottle ---------- */
+function newBottleSheet() {
+  openSheet(
+    '<h3>Open a new ' + BOTTLE_NAME + ' bottle?</h3>' +
+    '<p>This records right now as the open time and starts a fresh 3-day countdown. ' +
+    'You can change the time afterward with Edit open time.</p>' +
+    '<button class="btn solid" id="confirmBottle">Open new bottle</button>' +
+    '<button class="btn" id="cancelSheet">Cancel</button>'
+  );
+  document.getElementById('cancelSheet').onclick = closeSheet;
+  const confirm = document.getElementById('confirmBottle');
+  confirm.onclick = function(){
+    state.bottle = { openedAt: new Date().toISOString() };
+    closeSheet(); render(); save();
+    toast('New bottle logged');
+  };
+  confirm.focus();
+}
+
+function editBottleSheet() {
+  const start = state.bottle ? new Date(state.bottle.openedAt) : new Date();
+  openSheet(
+    '<h3>Edit open time</h3>' +
+    '<p>Set when the bottle was actually opened. The 3-day countdown runs from this time.</p>' +
+    '<label class="field"><span class="lbl">Opened</span>' +
+    '<input type="datetime-local" id="openedAt" value="' + toLocalStamp(start) + '"></label>' +
+    '<button class="btn solid" id="saveBottle">Save changes</button>' +
+    '<button class="btn danger" id="clearBottle">Remove bottle</button>' +
+    '<button class="btn" id="cancelSheet">Cancel</button>'
+  );
+  const input = document.getElementById('openedAt');
+  document.getElementById('cancelSheet').onclick = closeSheet;
+  document.getElementById('clearBottle').onclick = function(){
+    state.bottle = null; closeSheet(); render(); save(); toast('Bottle removed');
+  };
+  document.getElementById('saveBottle').onclick = function(){
+    if (!input.value) { toast('Pick the date and time the bottle was opened.'); return; }
+    const when = new Date(input.value);
+    if (isNaN(when)) { toast('That date and time isn\u2019t valid.'); return; }
+    if (when - new Date() > 60000) { toast('That time is in the future. Pick when the bottle was opened.'); return; }
+    state.bottle = { openedAt: when.toISOString() };
+    closeSheet(); render(); save();
+    toast('Open time updated');
+  };
+  input.focus();
+}
+
+function renderBottle() {
+  const el = document.getElementById('bottle');
+  const banner = document.getElementById('banner');
+
+  if (!state.bottle) {
+    el.className = 'bottle';
+    el.innerHTML =
+      '<div class="bottle-title">No ' + BOTTLE_NAME + ' bottle open</div>' +
+      '<div class="empty">Log a bottle to start its 3-day countdown.</div>' +
+      '<button class="btn solid" id="newBottle">Log a bottle</button>';
+    banner.hidden = true;
+  } else {
+    const opened = new Date(state.bottle.openedAt);
+    const expires = new Date(opened.getTime() + BOTTLE_HOURS * 3600000);
+    const now = new Date();
+    const expired = now >= expires;
+    const pct = Math.min(100, Math.max(0, (now - opened) / (expires - opened) * 100));
+
+    el.className = 'bottle' + (expired ? ' expired' : '');
+    el.innerHTML =
+      '<div class="bottle-top"><div>' +
+      '<div class="bottle-title">' + BOTTLE_NAME + (expired ? ' expired' : ' in use') + '</div>' +
+      '<div class="bottle-sub">Opened ' + fmtDate(opened) + ' at ' + fmtTime(opened) + '</div>' +
+      '<div class="bottle-sub">' + (expired ? 'Expired ' : 'Expires ') + fmtDate(expires) + ' at ' + fmtTime(expires) + '</div>' +
+      '</div><div class="bottle-left">' +
+      (expired ? dur(now - expires) + ' ago' : dur(expires - now) + ' left') +
+      '</div></div>' +
+      '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="btn-row">' +
+      '<button class="btn" id="editBottle">Edit open time</button>' +
+      '<button class="btn solid" id="newBottle">Log new bottle</button></div>';
+    banner.hidden = !expired;
+    document.getElementById('editBottle').onclick = editBottleSheet;
+  }
+  document.getElementById('newBottle').onclick = newBottleSheet;
+}
+
+/* ---------- schedule editor ---------- */
+function addTimeRow(container, item, origin) {
+  const row = document.createElement('div');
+  row.className = 'time-row';
+  row.innerHTML =
+    '<input class="t" type="time" value="' + toTimeValue(item.m) + '" aria-label="Time">' +
+    '<input class="n" type="text" maxlength="24" placeholder="Medication" ' +
+    'value="' + esc(item.name || '') + '" aria-label="Medication">' +
+    '<button class="remove" type="button" aria-label="Remove this dose">' +
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg></button>';
+  row.dataset.origin = origin === null ? '' : String(origin);
+  row.querySelector('.remove').onclick = function(){ row.remove(); };
+  container.appendChild(row);
+  return row;
+}
+
+function scheduleSheet() {
+  openSheet(
+    '<h3>Edit schedule</h3>' +
+    '<p>These doses repeat every day. Name each one if you take more than one medication \u2014 ' +
+    'the name shows on that line.</p>' +
+    '<div class="col-head"><span class="c1">Time</span><span class="c2">Medication</span></div>' +
+    '<div id="rows"></div>' +
+    '<button class="btn" id="addTime">Add a dose</button>' +
+    '<button class="btn solid" id="saveSchedule">Save schedule</button>' +
+    '<button class="btn" id="cancelSheet">Cancel</button>'
+  );
+  const rows = document.getElementById('rows');
+  state.schedule.forEach(function(item){ addTimeRow(rows, item, item.m); });
+
+  document.getElementById('addTime').onclick = function(){
+    const last = state.schedule.length
+      ? Math.min(1380, state.schedule[state.schedule.length - 1].m + 60) : 540;
+    const prevName = state.schedule.length ? state.schedule[state.schedule.length - 1].name : '';
+    const row = addTimeRow(rows, { m: last, name: prevName }, null);
+    row.querySelector('.t').focus();
+  };
+  document.getElementById('cancelSheet').onclick = closeSheet;
+
+  document.getElementById('saveSchedule').onclick = function(){
+    const list = [];
+    const nodes = rows.querySelectorAll('.time-row');
+    for (let i = 0; i < nodes.length; i++) {
+      const v = nodes[i].querySelector('.t').value;
+      if (!v) { toast('Every dose needs a time.'); return; }
+      list.push({
+        m: fromTimeValue(v),
+        name: nodes[i].querySelector('.n').value.trim(),
+        origin: nodes[i].dataset.origin
+      });
+    }
+    if (!list.length) { toast('Keep at least one dose.'); return; }
+    const seen = {};
+    for (let i = 0; i < list.length; i++) {
+      if (seen[list[i].m]) { toast('Two doses can\u2019t be at the same time.'); return; }
+      seen[list[i].m] = true;
+    }
+    // carry today's checkmarks across edited times, drop deleted ones
+    const key = dayKey(new Date());
+    const old = state.log[key] || {};
+    const next = {};
+    list.forEach(function(item){
+      if (item.origin !== '' && old[item.origin]) next[item.m] = old[item.origin];
+    });
+    state.log[key] = next;
+    state.schedule = list
+      .map(function(i){ return { m: i.m, name: i.name }; })
+      .sort(function(a,b){ return a.m - b.m; });
+    closeSheet(); render(); save();
+    toast('Schedule saved');
+  };
+}
+
+/* ---------- render ---------- */
+function render() {
+  const now = new Date();
+  document.getElementById('today').textContent =
+    now.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
+
+  const all = state.schedule;
+  const day = todayLog();
+  const nextItem = all.filter(function(i){ return !day[i.m] && doseDate(i.m) > now; })[0];
+  const nextDue = nextItem ? nextItem.m : null;
+
+  const groups = [
+    { name: 'Morning',   items: all.filter(function(i){ return i.m < 720; }) },
+    { name: 'Afternoon', items: all.filter(function(i){ return i.m >= 720 && i.m < 1020; }) },
+    { name: 'Evening',   items: all.filter(function(i){ return i.m >= 1020; }) }
+  ];
+
+  const host = document.getElementById('sections');
+  host.innerHTML = '';
+  groups.forEach(function(g){
+    if (!g.items.length) return;
+    const head = document.createElement('div');
+    head.className = 'sec-head';
+    head.innerHTML = '<h2>' + g.name + '</h2><div class="tally">' +
+      g.items.filter(function(i){ return day[i.m]; }).length + ' of ' + g.items.length + '</div>';
+    const card = document.createElement('div');
+    card.className = 'card';
+    g.items.forEach(function(i){ card.appendChild(renderDose(i, day, nextDue)); });
+    host.appendChild(head);
+    host.appendChild(card);
+  });
+
+  const done = all.filter(function(i){ return day[i.m]; }).length;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = '/' + all.length;
+  const C = 2 * Math.PI * 28;
+  document.getElementById('prog').style.strokeDashoffset = all.length ? C - (done / all.length) * C : C;
+
+  renderBottle();
+}
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg) {
+  const old = document.querySelectorAll('.toast');
+  for (let i = 0; i < old.length; i++) old[i].remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  t.setAttribute('role', 'status');
+  document.body.appendChild(t);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.remove(); }, 2400);
+}
+
+/* ---------- start ---------- */
+document.getElementById('bottleHead').textContent = BOTTLE_NAME + ' bottle';
+document.getElementById('editSchedule').onclick = scheduleSheet;
+
+loadLocal();
+ready = true;
+render();
+
+setInterval(function(){ if (!document.getElementById('scrim')) render(); }, 30000);
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden && !document.getElementById('scrim')) render();
+});
+
+/* Shared sync — only runs if the config above has been filled in.
+   Any failure here leaves the app working on local storage. */
+(async function connectSync(){
+  if (!firebaseConfig.apiKey || firebaseConfig.apiKey.indexOf('PASTE') === 0) return;
+  try {
+    const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const dbMod  = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+    const db = dbMod.getDatabase(appMod.initializeApp(firebaseConfig));
+    const stateRef = dbMod.ref(db, 'eyedrops');
+    cloud = { ref: stateRef, set: dbMod.set };
+
+    let seeded = false;
+    dbMod.onValue(stateRef, function(snapshot){
+      const val = snapshot.val();
+      if (val) {
+        state.schedule = normalize(val.schedule);
+        state.bottle = val.bottle || null;
+        state.log = val.log || {};
+        try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (e) {}
+        if (!document.getElementById('scrim')) render();
+      } else if (!seeded) {
+        seeded = true;   // shared copy is empty — publish what this device has
+        save();
+      }
+    }, function(){
+      cloud = null;
+      toast('Sync unavailable. Saving on this device only.');
+    });
+  } catch (e) {
+    cloud = null;
+    toast('Sync unavailable. Saving on this device only.');
+  }
+})();
+</script>
+</body>
+</html>
